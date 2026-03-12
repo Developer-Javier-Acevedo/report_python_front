@@ -1,10 +1,14 @@
 @import '../../../styles/variables';
 @import '../../../styles/mixins';
 
+// ==================
+// Shell principal
+// ==================
 .app-shell {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background: $bg-primary;
 }
 
@@ -14,22 +18,20 @@
 .app-header {
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 300;
   height: $header-height;
-  background: rgba($bg-secondary, 0.95);
+  background: rgba($bg-secondary, 0.97);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid $border-color;
   box-shadow: 0 1px 20px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
 
   &__inner {
     display: flex;
     align-items: center;
     height: 100%;
-    padding: 0 $spacing-6;
-    gap: $spacing-6;
-    max-width: 1600px;
-    margin: 0 auto;
-    width: 100%;
+    padding: 0 $spacing-5;
+    gap: $spacing-4;
   }
 
   &__brand {
@@ -48,34 +50,58 @@
   }
 }
 
-// Brand / Logo
+.hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  border-radius: $border-radius-sm;
+  color: $text-muted;
+  cursor: pointer;
+  transition: $transition;
+  flex-shrink: 0;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background: rgba($text-light, 0.07);
+    color: $text-light;
+  }
+
+  @include respond-to('md') {
+    display: flex;
+  }
+}
+
 .brand-logo {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   background: linear-gradient(135deg, $primary 0%, $primary-dark 100%);
   border-radius: $border-radius-sm;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba($primary, 0.4);
+  box-shadow: 0 2px 8px rgba($primary, 0.35);
+  flex-shrink: 0;
 
-  svg {
-    width: 22px;
-    height: 22px;
-    fill: white;
-  }
+  svg { width: 20px; height: 20px; fill: white; }
 }
 
 .brand-text {
   display: flex;
   flex-direction: column;
+  line-height: 1;
 }
 
 .brand-name {
   font-size: $font-size-lg;
   font-weight: 800;
-  color: $text-light;
-  line-height: 1.1;
   letter-spacing: -0.02em;
   background: linear-gradient(135deg, $text-light 0%, $primary-light 100%);
   -webkit-background-clip: text;
@@ -88,73 +114,24 @@
   color: $text-secondary;
   font-weight: 500;
   letter-spacing: 0.04em;
+  margin-top: 1px;
 }
 
-// Navigation
-.app-nav {
-  display: flex;
-  align-items: center;
-  gap: $spacing-1;
-}
-
-.nav-link {
-  display: flex;
-  align-items: center;
-  gap: $spacing-2;
-  padding: $spacing-2 $spacing-4;
-  border-radius: $border-radius-sm;
-  font-size: $font-size-sm;
-  font-weight: 500;
-  color: $text-muted;
-  transition: $transition;
-  text-decoration: none;
-
-  svg {
-    width: 16px;
-    height: 16px;
-    fill: currentColor;
-    flex-shrink: 0;
-  }
-
-  &:hover {
-    color: $text-light;
-    background: rgba($text-light, 0.08);
-  }
-
-  &.active {
-    color: $primary-light;
-    background: rgba($primary, 0.15);
-
-    svg {
-      fill: $primary-light;
-    }
-  }
-}
-
-// Status indicator
 .status-indicator {
   display: flex;
   align-items: center;
   gap: $spacing-2;
-
-  @include respond-to('md') {
-    display: none;
-  }
+  @include respond-to('md') { display: none; }
 }
 
 .status-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-
   &--online {
     background: $secondary;
     box-shadow: 0 0 6px rgba($secondary, 0.6);
     animation: pulse-dot 2s ease-in-out infinite;
-  }
-
-  &--offline {
-    background: $danger;
   }
 }
 
@@ -167,10 +144,7 @@
 .api-badges {
   display: flex;
   gap: $spacing-2;
-
-  @include respond-to('md') {
-    display: none;
-  }
+  @include respond-to('md') { display: none; }
 }
 
 .api-badge {
@@ -181,17 +155,46 @@
   font-size: $font-size-xs;
   font-weight: 600;
   color: rgba($primary-light, 0.8);
-  letter-spacing: 0.03em;
 }
 
 // ==================
-// Main Content
+// Body
 // ==================
+.app-body {
+  display: flex;
+  flex: 1;
+  align-items: stretch;   // ← fuerza que los hijos ocupen toda la altura
+  overflow: hidden;
+  position: relative;
+  min-height: 0;           // ← necesario en Firefox para flex anidado
+}
+
 .app-main {
   flex: 1;
+  overflow: hidden;      // ← no scroll aquí; cada página maneja su propio scroll
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  min-height: 0;
+}
+
+// Overlay mobile
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  top: $header-height;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 150;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+
+  &--visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  @include respond-to('md') { display: block; }
 }
 
 // ==================
@@ -207,10 +210,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 $spacing-6;
-    max-width: 1600px;
-    margin: 0 auto;
-    width: 100%;
+    padding: 0 $spacing-5;
     gap: $spacing-4;
     flex-wrap: wrap;
   }
@@ -223,18 +223,14 @@
   a {
     color: $primary-light;
     font-weight: 500;
-    transition: $transition;
-
-    &:hover {
-      color: $text-light;
-    }
+    &:hover { color: $text-light; }
   }
 }
 
 .footer-tech {
   display: flex;
   gap: $spacing-2;
-  flex-shrink: 0;
+  @include respond-to('md') { display: none; }
 }
 
 .tech-badge {
@@ -249,26 +245,11 @@
 
 @keyframes pulse-dot {
   0%, 100% { box-shadow: 0 0 6px rgba($secondary, 0.6); }
-  50% { box-shadow: 0 0 12px rgba($secondary, 0.9); }
+  50%       { box-shadow: 0 0 12px rgba($secondary, 0.9); }
 }
 
 @include respond-to('sm') {
-  .app-header {
-    &__inner {
-      padding: 0 $spacing-3;
-      gap: $spacing-3;
-    }
-  }
-
-  .brand-tagline {
-    display: none;
-  }
-
-  .footer-tech {
-    display: none;
-  }
-
-  .app-footer__inner {
-    padding: 0 $spacing-3;
-  }
+  .app-header__inner { padding: 0 $spacing-3; }
+  .brand-tagline     { display: none; }
+  .app-footer__inner { padding: 0 $spacing-3; }
 }

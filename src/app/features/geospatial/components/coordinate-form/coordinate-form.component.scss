@@ -1,12 +1,19 @@
 @import '../../../../../styles/variables';
 @import '../../../../../styles/mixins';
 
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
 .form-card {
   background: $bg-secondary;
   border-radius: $border-radius;
   border: 1px solid $border-color;
   overflow: hidden;
-  height: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
 }

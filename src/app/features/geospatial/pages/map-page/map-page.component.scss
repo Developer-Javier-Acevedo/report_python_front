@@ -1,16 +1,23 @@
 @import '../../../../../styles/variables';
 @import '../../../../../styles/mixins';
 
+// El host <app-map-page> debe ser flex-item que ocupa TODO el espacio de app-main
+:host {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .map-page {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  min-height: calc(100vh - #{$header-height});
-  padding: $spacing-5 $spacing-6;
-  gap: $spacing-5;
-  max-width: 1600px;
-  margin: 0 auto;
+  flex: 1;
+  min-height: 0;
+  padding: $spacing-4 $spacing-6;
+  gap: $spacing-3;
   width: 100%;
+  overflow: hidden;
 }
 
 // Page Header
@@ -20,11 +27,9 @@
   justify-content: space-between;
   gap: $spacing-4;
   flex-wrap: wrap;
+  flex-shrink: 0;
 
-  &__content {
-    flex: 1;
-    min-width: 0;
-  }
+  &__content { flex: 1; min-width: 0; }
 
   &__title {
     display: flex;
@@ -36,12 +41,7 @@
     margin-bottom: $spacing-1;
     letter-spacing: -0.02em;
 
-    svg {
-      width: 28px;
-      height: 28px;
-      fill: $primary-light;
-      flex-shrink: 0;
-    }
+    svg { width: 28px; height: 28px; fill: $primary-light; flex-shrink: 0; }
   }
 
   &__subtitle {
@@ -91,19 +91,22 @@
   animation: pulse 1.5s ease-in-out infinite;
 }
 
-// Global Error
 .global-error {
+  flex-shrink: 0;
   animation: fadeIn 0.3s ease;
 }
 
-// Content Grid - 3 column layout
+// =============================================
+// Content Grid — mapa ocupa toda la izquierda
+// =============================================
 .content-grid {
   display: grid;
-  grid-template-columns: 300px 1fr 300px;
-  grid-template-areas: "left center right";
-  gap: $spacing-5;
+  grid-template-columns: 1fr 340px;
+  grid-template-rows: 1fr;          // ← fila única que toma TODO el espacio restante
+  grid-template-areas: "map form";
+  gap: $spacing-4;
   flex: 1;
-  min-height: 600px;
+  min-height: 0;                    // ← crítico para flex dentro de flex
   align-items: stretch;
 }
 
@@ -112,111 +115,66 @@
   flex-direction: column;
   min-height: 0;
 
-  &--left {
-    grid-area: left;
+  // Mapa: altura total de la fila del grid
+  &--map {
+    grid-area: map;
   }
 
-  &--center {
-    grid-area: center;
-    min-height: 500px;
-  }
-
-  &--right {
-    grid-area: right;
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-4;
+  // Formulario: columna derecha, scroll interno si el contenido desborda
+  &--form {
+    grid-area: form;
     overflow-y: auto;
     @include custom-scrollbar;
   }
 }
 
-// Responsive: Large screens - wider panels
+// Pantallas grandes: formulario un poco más ancho
 @media (min-width: #{$breakpoint-xl}) {
   .content-grid {
-    grid-template-columns: 320px 1fr 320px;
+    grid-template-columns: 1fr 380px;
   }
 }
 
-// Responsive: Medium screens - collapse to 2 columns
+// Pantallas medianas: formulario encima del mapa
 @media (max-width: #{$breakpoint-lg}) {
-  .map-page {
-    padding: $spacing-4;
-  }
+  .map-page { padding: $spacing-4; }
 
   .content-grid {
-    grid-template-columns: 280px 1fr;
-    grid-template-rows: auto auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
     grid-template-areas:
-      "left center"
-      "right right";
+      "form"
+      "map";
   }
 
-  .panel--right {
-    flex-direction: row;
-    overflow-x: auto;
-    overflow-y: hidden;
-
-    app-weather-panel,
-    app-location-summary {
-      min-width: 300px;
-      flex: 1;
-    }
-  }
+  .panel--map  { min-height: 420px; }
+  .panel--form { overflow-y: visible; }
 }
 
-// Responsive: Small screens - single column
+// Móvil
 @media (max-width: #{$breakpoint-md}) {
   .map-page {
     padding: $spacing-3;
-    gap: $spacing-4;
+    gap: $spacing-3;
   }
 
   .page-header {
     &__title {
       font-size: $font-size-xl;
-
-      svg {
-        width: 22px;
-        height: 22px;
-      }
+      svg { width: 22px; height: 22px; }
     }
-
-    &__subtitle {
-      display: none;
-    }
+    &__subtitle { display: none; }
   }
 
-  .content-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-    grid-template-areas:
-      "left"
-      "center"
-      "right";
-  }
-
-  .panel--center {
-    min-height: 350px;
-  }
-
-  .panel--right {
-    flex-direction: column;
-    overflow-y: visible;
-
-    app-weather-panel,
-    app-location-summary {
-      min-width: 0;
-    }
-  }
+  .panel--map { min-height: 350px; }
 }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  50%       { opacity: 0.4; }
 }

@@ -1,0 +1,281 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+$sidebar-transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                     transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+
+// ==================
+// Sidebar container
+// ==================
+.sidebar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: $sidebar-width;
+  height: 100%;          // ← ocupa toda la altura del app-body
+  min-height: 0;
+  background: $bg-secondary;
+  border-right: 1px solid $border-color;
+  transition: $sidebar-transition;
+  overflow: hidden;
+  flex-shrink: 0;
+  z-index: 100;
+
+  // Estado colapsado
+  &--collapsed {
+    width: $sidebar-collapsed-width;
+
+    .sidebar__label {
+      opacity: 0;
+      width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .sidebar__badge {
+      display: none;
+    }
+
+    .soon-tag {
+      display: none;
+    }
+
+    .sidebar__toggle {
+      justify-content: center;
+    }
+  }
+}
+
+// ==================
+// Toggle button
+// ==================
+.sidebar__toggle {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  width: 100%;
+  padding: $spacing-4;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid $border-color;
+  color: $text-muted;
+  cursor: pointer;
+  transition: $transition;
+  flex-shrink: 0;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: rgba($text-light, 0.05);
+    color: $text-light;
+  }
+}
+
+// ==================
+// Nav list
+// ==================
+.sidebar__nav {
+  flex: 1;
+  padding: $spacing-3 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $border-color;
+    border-radius: 2px;
+  }
+}
+
+.sidebar__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 $spacing-2;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-1;
+}
+
+.sidebar__item {
+  &--disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+
+    .sidebar__link--soon {
+      pointer-events: none;
+    }
+  }
+}
+
+// ==================
+// Nav link
+// ==================
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-3 $spacing-3;
+  border-radius: $border-radius-sm;
+  color: $text-muted;
+  text-decoration: none;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  transition: $transition;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  min-height: 44px;
+
+  &:hover:not(.sidebar__link--soon) {
+    color: $text-light;
+    background: rgba($text-light, 0.07);
+  }
+
+  // Estado activo (routerLinkActive)
+  &--active {
+    color: $primary-light !important;
+    background: rgba($primary, 0.15) !important;
+
+    .sidebar__icon svg {
+      fill: $primary-light !important;
+    }
+
+    // Borde izquierdo indicador
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 60%;
+      background: $primary-light;
+      border-radius: 0 2px 2px 0;
+    }
+  }
+
+  &--soon {
+    cursor: default;
+  }
+}
+
+// ==================
+// Icon
+// ==================
+.sidebar__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    transition: fill 0.2s ease;
+  }
+}
+
+// ==================
+// Label
+// ==================
+.sidebar__label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  transition: opacity 0.2s ease, width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+// ==================
+// Badge (número)
+// ==================
+.sidebar__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 $spacing-1;
+  background: $primary;
+  color: $text-white;
+  border-radius: $border-radius-full;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+// ==================
+// Coming soon tag
+// ==================
+.soon-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  font-style: normal;
+  color: $text-muted;
+  background: rgba($bg-tertiary, 0.8);
+  border: 1px solid $border-color;
+  border-radius: $border-radius-xs;
+  padding: 1px 5px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+// ==================
+// Sidebar footer
+// ==================
+.sidebar__footer {
+  padding: $spacing-3 $spacing-2;
+  border-top: 1px solid $border-color;
+  flex-shrink: 0;
+}
+
+.sidebar__version {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-2 $spacing-3;
+  color: $text-muted;
+  font-size: $font-size-xs;
+  overflow: hidden;
+  white-space: nowrap;
+
+  .sidebar__icon svg {
+    width: 14px;
+    height: 14px;
+    fill: $text-muted;
+  }
+}
+
+// ==================
+// Mobile: sidebar como drawer
+// ==================
+@include respond-to('md') {
+  .sidebar {
+    position: fixed;
+    top: $header-height;
+    left: 0;
+    height: calc(100vh - #{$header-height});
+    z-index: 200;
+    transform: translateX(0);
+    box-shadow: $shadow-xl;
+
+    &--collapsed {
+      transform: translateX(-100%);
+      width: $sidebar-width; // En móvil no se colapsa, se oculta
+    }
+  }
+}

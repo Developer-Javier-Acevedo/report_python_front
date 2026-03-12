@@ -57,34 +57,23 @@ import { LoadingState, ApiErrorResponse } from '../../../../shared/models/api.mo
 
       <!-- Main Content Grid -->
       <div class="content-grid">
-        <!-- Left Panel: Coordinate Form -->
-        <aside class="panel panel--left">
-          <app-coordinate-form
-            #coordForm
-            (formSubmit)="onFormSubmit($event)"
-          ></app-coordinate-form>
-        </aside>
 
-        <!-- Center: Map Viewer -->
-        <main class="panel panel--center">
+        <!-- Mapa: ocupa todo el espacio disponible a la izquierda -->
+        <main class="panel panel--map">
           <app-map-viewer
             [markerData]="markerData"
             [circleData]="circleData"
           ></app-map-viewer>
         </main>
 
-        <!-- Right Panel: Weather + Summary -->
-        <aside class="panel panel--right">
-          <app-weather-panel
-            [weather]="weatherData"
-            [loading]="loadingState"
-            [error]="errorMessage"
-          ></app-weather-panel>
-
-          <app-location-summary
-            [query]="currentQuery"
-          ></app-location-summary>
+        <!-- Panel derecho: formulario de coordenadas -->
+        <aside class="panel panel--form">
+          <app-coordinate-form
+            #coordForm
+            (formSubmit)="onFormSubmit($event)"
+          ></app-coordinate-form>
         </aside>
+
       </div>
     </div>
   `,

@@ -16,7 +16,7 @@ import { RadiusRequest } from '../../../../shared/models/coordinates.model';
           </svg>
         </div>
         <div>
-          <h2 class="form-header__title">Búsqueda Geoespacial</h2>
+          <h2 class="form-header__title">Búsqueda </h2>
           <p class="form-header__subtitle">Introduce coordenadas y radio</p>
         </div>
       </div>
