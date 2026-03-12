@@ -1,0 +1,26 @@
+node_modules/
+npm-debug.log*
+
+# Angular build output
+dist/
+tmp/
+out-tsc/
+
+# Angular cache (NEVER commit - contains large binary files >100MB)
+.angular/
+
+# Environment secrets
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+/coverage

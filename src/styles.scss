@@ -1,0 +1,161 @@
+// Global Styles for GeoRadar
+@import 'styles/variables';
+@import 'styles/reset';
+@import 'styles/mixins';
+
+// Base body styles
+body {
+  font-family: $font-family;
+  background-color: $bg-primary;
+  color: $text-light;
+  min-height: 100vh;
+  @include custom-scrollbar;
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+// Utility Classes
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 $spacing-4;
+}
+
+// Card styles
+.card {
+  @include card;
+}
+
+// Badge
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-1 $spacing-3;
+  border-radius: $border-radius-full;
+  font-size: $font-size-xs;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &--primary {
+    background: rgba($primary, 0.2);
+    color: $primary-light;
+    border: 1px solid rgba($primary, 0.3);
+  }
+
+  &--success {
+    background: rgba($secondary, 0.2);
+    color: $secondary;
+    border: 1px solid rgba($secondary, 0.3);
+  }
+
+  &--danger {
+    background: rgba($danger, 0.2);
+    color: $danger;
+    border: 1px solid rgba($danger, 0.3);
+  }
+
+  &--warning {
+    background: rgba($warning, 0.2);
+    color: $warning;
+    border: 1px solid rgba($warning, 0.3);
+  }
+}
+
+// Divider
+.divider {
+  border: none;
+  border-top: 1px solid $border-color;
+  margin: $spacing-4 0;
+}
+
+// Scrollbar global
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg-primary;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $border-color;
+  border-radius: $border-radius-full;
+
+  &:hover {
+    background: $text-secondary;
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+// Leaflet overrides for dark theme
+.leaflet-container {
+  font-family: $font-family !important;
+  background: $bg-secondary !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba($bg-primary, 0.8) !important;
+  color: $text-muted !important;
+
+  a {
+    color: $primary-light !important;
+  }
+}
+
+.leaflet-control-zoom a {
+  background: $bg-secondary !important;
+  color: $text-light !important;
+  border-color: $border-color !important;
+
+  &:hover {
+    background: $bg-tertiary !important;
+  }
+}
+
+.leaflet-popup-content-wrapper {
+  background: $bg-card-dark !important;
+  color: $text-light !important;
+  border: 1px solid $border-color !important;
+  box-shadow: $shadow-lg !important;
+}
+
+.leaflet-popup-tip {
+  background: $bg-card-dark !important;
+}

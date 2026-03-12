@@ -1,0 +1,274 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: $bg-primary;
+}
+
+// ==================
+// Header
+// ==================
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: $header-height;
+  background: rgba($bg-secondary, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid $border-color;
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.3);
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 $spacing-6;
+    gap: $spacing-6;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+    flex-shrink: 0;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+}
+
+// Brand / Logo
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, $primary 0%, $primary-dark 100%);
+  border-radius: $border-radius-sm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba($primary, 0.4);
+
+  svg {
+    width: 22px;
+    height: 22px;
+    fill: white;
+  }
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-size: $font-size-lg;
+  font-weight: 800;
+  color: $text-light;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, $text-light 0%, $primary-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brand-tagline {
+  font-size: $font-size-xs;
+  color: $text-secondary;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+// Navigation
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  padding: $spacing-2 $spacing-4;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  color: $text-muted;
+  transition: $transition;
+  text-decoration: none;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    color: $text-light;
+    background: rgba($text-light, 0.08);
+  }
+
+  &.active {
+    color: $primary-light;
+    background: rgba($primary, 0.15);
+
+    svg {
+      fill: $primary-light;
+    }
+  }
+}
+
+// Status indicator
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+
+  @include respond-to('md') {
+    display: none;
+  }
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+
+  &--online {
+    background: $secondary;
+    box-shadow: 0 0 6px rgba($secondary, 0.6);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  &--offline {
+    background: $danger;
+  }
+}
+
+.status-text {
+  font-size: $font-size-xs;
+  color: $text-muted;
+  font-weight: 500;
+}
+
+.api-badges {
+  display: flex;
+  gap: $spacing-2;
+
+  @include respond-to('md') {
+    display: none;
+  }
+}
+
+.api-badge {
+  padding: 2px $spacing-2;
+  background: rgba($primary, 0.12);
+  border: 1px solid rgba($primary, 0.25);
+  border-radius: $border-radius-xs;
+  font-size: $font-size-xs;
+  font-weight: 600;
+  color: rgba($primary-light, 0.8);
+  letter-spacing: 0.03em;
+}
+
+// ==================
+// Main Content
+// ==================
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+// ==================
+// Footer
+// ==================
+.app-footer {
+  border-top: 1px solid $border-color;
+  background: $bg-secondary;
+  padding: $spacing-3 0;
+  flex-shrink: 0;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 $spacing-6;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+    gap: $spacing-4;
+    flex-wrap: wrap;
+  }
+}
+
+.footer-text {
+  font-size: $font-size-xs;
+  color: $text-secondary;
+
+  a {
+    color: $primary-light;
+    font-weight: 500;
+    transition: $transition;
+
+    &:hover {
+      color: $text-light;
+    }
+  }
+}
+
+.footer-tech {
+  display: flex;
+  gap: $spacing-2;
+  flex-shrink: 0;
+}
+
+.tech-badge {
+  padding: 2px $spacing-2;
+  background: rgba($bg-tertiary, 0.8);
+  border: 1px solid $border-color;
+  border-radius: $border-radius-xs;
+  font-size: $font-size-xs;
+  font-weight: 600;
+  color: $text-muted;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 6px rgba($secondary, 0.6); }
+  50% { box-shadow: 0 0 12px rgba($secondary, 0.9); }
+}
+
+@include respond-to('sm') {
+  .app-header {
+    &__inner {
+      padding: 0 $spacing-3;
+      gap: $spacing-3;
+    }
+  }
+
+  .brand-tagline {
+    display: none;
+  }
+
+  .footer-tech {
+    display: none;
+  }
+
+  .app-footer__inner {
+    padding: 0 $spacing-3;
+  }
+}
